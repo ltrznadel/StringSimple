@@ -95,7 +95,6 @@ String  String::operator+(const String & st)
 	delete[] tempString;
 
 	return returnTemp;
-	// TODO: tu wstawiæ instrukcjê return
 }
 
 char & String::operator[](int i)
