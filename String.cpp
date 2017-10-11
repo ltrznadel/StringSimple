@@ -85,7 +85,21 @@ String& String::operator=(const String& st)
 	return *this;
 }
 
-String  String::operator+(const String & st)
+String & String::operator=(const char * ch)
+{
+	delete[] contentString;
+	size_t tempSize;
+	tempSize = strlen(ch);
+
+	contentString = new char[tempSize + 1];
+	strcpy(this->contentString, ch);
+	this->stringSize = tempSize;
+
+	return *this;
+	// TODO: tu wstawiæ instrukcjê return
+}
+
+String  String::operator+(const String & st) const
 {
 	char* tempString = new char[this->stringSize + st.stringSize + 1];
 	strcpy(tempString, this->contentString);
@@ -95,7 +109,19 @@ String  String::operator+(const String & st)
 	delete[] tempString;
 
 	return returnTemp;
-	// TODO: tu wstawiæ instrukcjê return
+}
+
+String String::operator+(const char * ch) const
+{
+	size_t tempSize = strlen(ch);
+	char* tempString = new char[tempSize + this->stringSize + 1];
+	strcpy(tempString, this->contentString);
+	strcat(tempString, ch);
+
+	String returnTemp(tempString);
+	delete[] tempString;
+
+	return returnTemp;
 }
 
 char & String::operator[](int i)
@@ -112,6 +138,7 @@ char & String::operator[](int i)
 bool String::operator==(String & st) const
 {
 	int temp = 0;		//loop iterator
+
 	if (st.stringSize == this->stringSize) {
 		for (temp = 0; temp < stringSize; temp++)
 			if (this->contentString[temp] != st[temp])
@@ -120,6 +147,21 @@ bool String::operator==(String & st) const
 
 	return true;
 }
+
+/*bool String::operator==(const char * ch) const
+{
+	std::cout << "Comparison started";
+	int temp = 0;		//loop iterator
+	size_t tempSize = strlen(ch);
+
+	if (tempSize == this->stringSize) {
+		for (temp = 0; temp < stringSize; temp++)
+			if (this->contentString[temp] != ch[temp])
+				return false;
+	}
+	return false;
+}
+*/ //String to char* comparison
 
 const char & String::operator[](int i) const
 {
@@ -136,5 +178,19 @@ std::ostream & operator<<(std::ostream & os, const String & st)
 {
 	os << st.contentString;
 	return os;
+}
+
+String & operator+(const char * ch, const String & st)
+{
+	size_t tempSize = strlen(ch);
+	char* tempString = new char[tempSize + st.stringSize + 1];
+
+	strcpy(tempString, ch);
+	strcat(tempString, st.contentString);
+
+	String returnString(tempString);
+	delete[] tempString;
+
+	return returnString;
 }
 
